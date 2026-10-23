@@ -53,9 +53,12 @@ interface ProfileRow {
  * disabled profile is rejected exactly like an unknown key so a revoked
  * client can't distinguish "disabled" from "deleted".
  */
+import { getClientContext, setClientProfileId } from './client-context.js';
+
 export function resolveAuth(token: string | undefined): ResolvedAuth | null {
   if (!token) return null;
   if (timingSafeStringEqual(token, getUnifiedApiKey())) {
+    setClientProfileId(null);
     return { kind: 'unified', systemPrompt: null };
   }
   if (!token.startsWith(CLIENT_PROFILE_KEY_PREFIX)) return null;
@@ -66,6 +69,7 @@ export function resolveAuth(token: string | undefined): ResolvedAuth | null {
   const prompt = row.system_prompt != null && row.system_prompt.trim().length > 0
     ? row.system_prompt
     : null;
+  setClientProfileId(row.id);
   return { kind: 'profile', profileId: row.id, name: row.name, systemPrompt: prompt };
 }
 

@@ -119,10 +119,11 @@ export function logRequest(
     // middleware); null when logging happens outside an HTTP request.
     const client = getClientContext();
     const tx = db.transaction(() => {
+      const clientProfileId = client.clientProfileId ?? null;
       const insert = db.prepare(`
-        INSERT INTO requests (platform, model_id, key_id, status, input_tokens, output_tokens, latency_ms, error, ttfb_ms, requested_model, served_model, client_ip, client_user_agent, client_agent, caller, model_db_id, failure_attribution)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `).run(platform, modelId, keyId, status, inputTokens, outputTokens, latencyMs, error, ttfbMs, requestedModel, servedModel, client.ip, client.userAgent, client.agent, caller, resolveModelDbId(db, platform, modelId, keyId), failureAttribution);
+        INSERT INTO requests (platform, model_id, key_id, status, input_tokens, output_tokens, latency_ms, error, ttfb_ms, requested_model, served_model, client_ip, client_user_agent, client_agent, caller, model_db_id, failure_attribution, client_profile_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(platform, modelId, keyId, status, inputTokens, outputTokens, latencyMs, error, ttfbMs, requestedModel, servedModel, client.ip, client.userAgent, client.agent, caller, resolveModelDbId(db, platform, modelId, keyId), failureAttribution, clientProfileId);
 
       // Report the row id back to the fallback loop's attempt trace (if one is
       // active): the LAST id noted during a loop run is the terminal row the
@@ -135,15 +136,15 @@ export function logRequest(
       const isError = status === 'error' ? 1 : 0;
 
       db.prepare(`
-        INSERT INTO request_hourly (hour, total_requests, success_count, error_count, input_tokens, output_tokens)
-        VALUES (?, 1, ?, ?, ?, ?)
-        ON CONFLICT(hour) DO UPDATE SET
+        INSERT INTO request_hourly (hour, client_profile_id, total_requests, success_count, error_count, input_tokens, output_tokens)
+        VALUES (?, ?, 1, ?, ?, ?, ?)
+        ON CONFLICT(hour, client_profile_id) DO UPDATE SET
           total_requests = total_requests + 1,
           success_count  = success_count + ?,
           error_count    = error_count + ?,
           input_tokens   = input_tokens + ?,
           output_tokens  = output_tokens + ?
-      `).run(hour, isSuccess, isError, inputTokens, outputTokens, isSuccess, isError, inputTokens, outputTokens);
+      `).run(hour, clientProfileId, isSuccess, isError, inputTokens, outputTokens, isSuccess, isError, inputTokens, outputTokens);
 
       incrementSetting(db, 'total_requests', 1);
       incrementSetting(db, 'total_input_tokens', inputTokens);

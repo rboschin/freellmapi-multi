@@ -218,6 +218,31 @@ interface ByModelRow {
   estimatedCost: number
 }
 
+interface ByClientProfileRow {
+  profileId: number
+  name: string | null
+  requests: number
+  successRate: number
+  avgLatencyMs: number
+  totalInputTokens: number
+  totalOutputTokens: number
+}
+
+type ByClientProfileCol = 'name' | 'requests' | 'success' | 'latency' | 'inTokens' | 'outTokens'
+const BY_CLIENT_PROFILE_COLS: readonly ByClientProfileCol[] = ['name', 'requests', 'success', 'latency', 'inTokens', 'outTokens']
+const BY_CLIENT_PROFILE_SORT_KEY = 'analytics.byClientProfileSort'
+
+const byClientProfileValue: SortValueFn<ByClientProfileRow, ByClientProfileCol> = (c, col) => {
+  switch (col) {
+    case 'name': return c.name || `#${c.profileId}`
+    case 'requests': return c.requests
+    case 'success': return c.successRate
+    case 'latency': return c.avgLatencyMs
+    case 'inTokens': return c.totalInputTokens
+    case 'outTokens': return c.totalOutputTokens
+  }
+}
+
 interface ByKeyRow {
   keyId: number
   label: string | null
@@ -600,6 +625,11 @@ export default function AnalyticsPage() {
     queryFn: () => apiFetch<ByModelRow[]>(`/api/analytics/by-model?range=${range}`),
   })
 
+  const { data: byClientProfile = [] } = useQuery({
+    queryKey: ['analytics', 'by-client', range],
+    queryFn: () => apiFetch<ByClientProfileRow[]>(`/api/analytics/by-client?range=${range}`),
+  })
+
   const { data: byKey = [] } = useQuery({
     queryKey: ['analytics', 'by-key', range],
     queryFn: () => apiFetch<ByKeyRow[]>(`/api/analytics/by-key?range=${range}`),
@@ -654,6 +684,11 @@ export default function AnalyticsPage() {
   )
   const byModelRows = useMemo(() => sortRows(byModel, byModelSort.sort, byModelValue), [byModel, byModelSort.sort])
   const byKeyRows = useMemo(() => sortRows(byKey, byKeySort.sort, byKeyValue), [byKey, byKeySort.sort])
+  const byClientProfileSort = useTableSort(BY_CLIENT_PROFILE_SORT_KEY, BY_CLIENT_PROFILE_COLS)
+  const byClientProfileRows = useMemo(
+    () => sortRows(byClientProfile, byClientProfileSort.sort, byClientProfileValue),
+    [byClientProfile, byClientProfileSort.sort],
+  )
   // The list is capped at 100 rows while `total` counts the whole filtered
   // set; say so while a sort is active and there is more than what's loaded.
   const recentCallsSortHint = recentCallsSort.sort && recentCalls && recentCalls.total > recentCalls.rows.length
@@ -1195,6 +1230,42 @@ export default function AnalyticsPage() {
               )}
             </Panel>
           </div>
+
+          {/* Usage by client profile (client profile tracking). */}
+          {byClientProfile.length > 0 && (
+            <div className="lg:col-span-2">
+              <Panel icon={Bot} title="Usage by Client Profile">
+                <div className="max-h-[360px] overflow-y-auto -mx-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <SortableHeader column="name" label="Client Profile" className="pl-4" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="requests" label={t('analytics.requests')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="success" label={t('common.success')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="latency" label={t('analytics.latency')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="inTokens" label={t('analytics.inTokens')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="outTokens" label={t('analytics.outTokens')} align="right" className="pr-4" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {byClientProfileRows.map((c) => (
+                        <TableRow key={c.profileId}>
+                          <TableCell className="pl-4 text-sm font-medium">
+                            {c.name || `#${c.profileId}`}
+                          </TableCell>
+                          <TableCell className="text-right tabular-nums">{c.requests}</TableCell>
+                          <TableCell className="text-right tabular-nums">{c.successRate}%</TableCell>
+                          <TableCell className="text-right tabular-nums">{c.avgLatencyMs} ms</TableCell>
+                          <TableCell className="text-right tabular-nums">{formatTokens(c.totalInputTokens)}</TableCell>
+                          <TableCell className="text-right tabular-nums pr-4">{formatTokens(c.totalOutputTokens)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </Panel>
+            </div>
+          )}
 
           {/* Usage by key: only rendered when the endpoint returns rows. */}
           {byKey.length > 0 && (

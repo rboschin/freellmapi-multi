@@ -450,6 +450,40 @@ analyticsRouter.get('/by-key', (req: Request, res: Response) => {
   })));
 });
 
+// Stats grouped by client profile.
+analyticsRouter.get('/by-client', (req: Request, res: Response) => {
+  const range = (req.query.range as string) ?? '7d';
+  const since = getSinceTimestamp(range);
+  const db = getDb();
+
+  const rows = db.prepare(`
+    SELECT
+      r.client_profile_id as profile_id,
+      p.name as name,
+      COUNT(*) as requests,
+      SUM(CASE WHEN r.status = 'success' THEN 1 ELSE 0 END) * 100.0 / NULLIF(SUM(CASE WHEN r.status <> 'canceled' THEN 1 ELSE 0 END), 0) as success_rate,
+      AVG(r.latency_ms) as avg_latency_ms,
+      SUM(r.input_tokens) as total_input_tokens,
+      SUM(r.output_tokens) as total_output_tokens
+    FROM requests r
+    LEFT JOIN client_profiles p ON p.id = r.client_profile_id
+    WHERE r.client_profile_id IS NOT NULL AND r.created_at >= ?
+    GROUP BY r.client_profile_id
+    ORDER BY requests DESC
+    LIMIT 50
+  `).all(since) as any[];
+
+  res.json(rows.map(r => ({
+    profileId: r.profile_id,
+    name: r.name ?? null,
+    requests: r.requests,
+    successRate: Math.round((r.success_rate ?? 0) * 10) / 10,
+    avgLatencyMs: Math.round(r.avg_latency_ms),
+    totalInputTokens: r.total_input_tokens ?? 0,
+    totalOutputTokens: r.total_output_tokens ?? 0,
+  })));
+});
+
 // Timeline data
 analyticsRouter.get('/timeline', (req: Request, res: Response) => {
   const range = (req.query.range as string) ?? '7d';

@@ -10,6 +10,8 @@ export interface ClientContext {
   /** The preset a decision model picked for this request (#1354), read by the
    *  router while the 'decision' strategy is active. Unset = Balanced. */
   routingStrategy?: PresetStrategy;
+  /** The client profile ID if authenticated via a client-profile key (sk-cp-...). */
+  clientProfileId?: number | null;
 }
 
 // Request-scoped caller identity, readable from anywhere below the middleware
@@ -58,4 +60,9 @@ export function getClientContext(): ClientContext {
 export function setRequestRoutingStrategy(strategy: PresetStrategy | undefined): void {
   const store = storage.getStore();
   if (store) store.routingStrategy = strategy;
+}
+
+export function setClientProfileId(id: number | null): void {
+  const store = storage.getStore();
+  if (store) store.clientProfileId = id;
 }
