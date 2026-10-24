@@ -852,7 +852,9 @@
     "sortHint": "Sorteringen gäller de {count} inlästa raderna",
     "cacheHitRate": "Cacheträffkvot",
     "cacheSavedTokens": "{tokens} tokens sparade",
-    "cacheHitRateHint": "{hits} träffar mot {misses} missar sedan servern startade · {requests} leverantörsanrop undvikna"
+    "cacheHitRateHint": "{hits} träffar mot {misses} missar sedan servern startade · {requests} leverantörsanrop undvikna",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Loggar",

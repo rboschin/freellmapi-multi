@@ -852,7 +852,9 @@
     "sortHint": "Сортирането се прилага за {count} заредени реда",
     "cacheHitRate": "Процент попадения в кеша",
     "cacheSavedTokens": "Спестени {tokens} токена",
-    "cacheHitRateHint": "{hits} попадения срещу {misses} пропуска от старта на сървъра · спестени {requests} заявки към доставчик"
+    "cacheHitRateHint": "{hits} попадения срещу {misses} пропуска от старта на сървъра · спестени {requests} заявки към доставчик",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Логове",

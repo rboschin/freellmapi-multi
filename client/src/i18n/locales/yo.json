@@ -852,7 +852,9 @@
     "sortHint": "Ìṣètò kan àwọn ìlà {count} tí a ti gbé sókè nìkan",
     "cacheHitRate": "Ìwọ̀n àṣeyọrí kaṣe",
     "cacheSavedTokens": "A ṣàfipamọ́ token {tokens}",
-    "cacheHitRateHint": "{hits} àṣeyọrí sí {misses} àìní láti ìgbà tí sáfà bẹ̀rẹ̀ · {requests} ìpè olùpèsè ni a yẹ̀ sílẹ̀"
+    "cacheHitRateHint": "{hits} àṣeyọrí sí {misses} àìní láti ìgbà tí sáfà bẹ̀rẹ̀ · {requests} ìpè olùpèsè ni a yẹ̀ sílẹ̀",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Àkọọlẹ",

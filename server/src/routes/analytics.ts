@@ -451,7 +451,7 @@ analyticsRouter.get('/by-key', (req: Request, res: Response) => {
 });
 
 // Stats grouped by client profile.
-analyticsRouter.get('/by-client', (req: Request, res: Response) => {
+analyticsRouter.get('/by-client-profile', (req: Request, res: Response) => {
   const range = (req.query.range as string) ?? '7d';
   const since = getSinceTimestamp(range);
   const db = getDb();

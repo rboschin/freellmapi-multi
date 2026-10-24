@@ -852,7 +852,9 @@
     "sortHint": "ସଜାଣି କେବଳ ଲୋଡ୍ ହୋଇଥିବା {count} ଧାଡ଼ି ପାଇଁ ପ୍ରଯୁଜ୍ୟ",
     "cacheHitRate": "କ୍ୟାଶ୍ ହିଟ୍ ହାର",
     "cacheSavedTokens": "{tokens} ଟୋକେନ୍ ସଞ୍ଚୟ",
-    "cacheHitRateHint": "ସର୍ଭର ଆରମ୍ଭ ହେବା ପରଠାରୁ {hits} ହିଟ୍ ବନାମ {misses} ମିସ୍ · {requests} ପ୍ରଦାତା କଲ୍ ଏଡ଼ାଯାଇଛି"
+    "cacheHitRateHint": "ସର୍ଭର ଆରମ୍ଭ ହେବା ପରଠାରୁ {hits} ହିଟ୍ ବନାମ {misses} ମିସ୍ · {requests} ପ୍ରଦାତା କଲ୍ ଏଡ଼ାଯାଇଛି",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "ଲଗ",

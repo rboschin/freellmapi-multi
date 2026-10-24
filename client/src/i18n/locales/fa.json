@@ -852,7 +852,9 @@
     "sortHint": "مرتب‌سازی فقط روی {count} ردیف بارگذاری‌شده اعمال می‌شود",
     "cacheHitRate": "نرخ اصابت حافظه نهان",
     "cacheSavedTokens": "{tokens} توکن صرفه‌جویی شد",
-    "cacheHitRateHint": "{hits} اصابت در برابر {misses} خطا از زمان راه‌اندازی سرور · {requests} فراخوانی ارائه‌دهنده صرفه‌جویی شد"
+    "cacheHitRateHint": "{hits} اصابت در برابر {misses} خطا از زمان راه‌اندازی سرور · {requests} فراخوانی ارائه‌دهنده صرفه‌جویی شد",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "لاگ‌ها",

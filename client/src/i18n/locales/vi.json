@@ -852,7 +852,9 @@
     "sortHint": "Sắp xếp chỉ áp dụng cho {count} hàng đã tải",
     "cacheHitRate": "Tỷ lệ trúng bộ nhớ đệm",
     "cacheSavedTokens": "Tiết kiệm {tokens} token",
-    "cacheHitRateHint": "{hits} lần trúng so với {misses} lần trượt kể từ khi máy chủ khởi động · tránh được {requests} lượt gọi nhà cung cấp"
+    "cacheHitRateHint": "{hits} lần trúng so với {misses} lần trượt kể từ khi máy chủ khởi động · tránh được {requests} lượt gọi nhà cung cấp",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Nhật ký",

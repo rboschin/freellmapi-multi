@@ -852,7 +852,9 @@
     "sortHint": "De sortering geldt voor de {count} geladen rijen",
     "cacheHitRate": "Cache-hitratio",
     "cacheSavedTokens": "{tokens} tokens bespaard",
-    "cacheHitRateHint": "{hits} hits tegenover {misses} missers sinds de serverstart · {requests} provideraanroepen vermeden"
+    "cacheHitRateHint": "{hits} hits tegenover {misses} missers sinds de serverstart · {requests} provideraanroepen vermeden",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logs",

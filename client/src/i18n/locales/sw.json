@@ -852,7 +852,9 @@
     "sortHint": "Upangaji unatumika kwa safu {count} zilizopakiwa",
     "cacheHitRate": "Kiwango cha mafanikio ya akiba",
     "cacheSavedTokens": "Tokeni {tokens} zimehifadhiwa",
-    "cacheHitRateHint": "Mafanikio {hits} dhidi ya makosa {misses} tangu seva ianze · miito {requests} kwa mtoa huduma imeepukwa"
+    "cacheHitRateHint": "Mafanikio {hits} dhidi ya makosa {misses} tangu seva ianze · miito {requests} kwa mtoa huduma imeepukwa",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Kumbukumbu",

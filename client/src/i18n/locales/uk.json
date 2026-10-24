@@ -852,7 +852,9 @@
     "sortHint": "Сортування застосовується до {count} завантажених рядків",
     "cacheHitRate": "Частка влучань у кеш",
     "cacheSavedTokens": "Заощаджено {tokens} токенів",
-    "cacheHitRateHint": "{hits} влучань проти {misses} промахів від запуску сервера · уникнено {requests} викликів до постачальника"
+    "cacheHitRateHint": "{hits} влучань проти {misses} промахів від запуску сервера · уникнено {requests} викликів до постачальника",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Журнал",

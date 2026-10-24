@@ -852,7 +852,9 @@
     "sortHint": "Сортирање важи за {count} учитаних редова",
     "cacheHitRate": "Стопа погодака кеша",
     "cacheSavedTokens": "Уштеђено {tokens} токена",
-    "cacheHitRateHint": "{hits} погодака наспрам {misses} промашаја од покретања сервера · избегнуто {requests} позива провајдеру"
+    "cacheHitRateHint": "{hits} погодака наспрам {misses} промашаја од покретања сервера · избегнуто {requests} позива провајдеру",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Логови",

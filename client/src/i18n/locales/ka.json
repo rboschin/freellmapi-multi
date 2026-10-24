@@ -852,7 +852,9 @@
     "sortHint": "დალაგება ვრცელდება მხოლოდ ჩატვირთულ {count} სტრიქონზე",
     "cacheHitRate": "ქეშის მოხვედრის მაჩვენებელი",
     "cacheSavedTokens": "დაზოგილია {tokens} ტოკენი",
-    "cacheHitRateHint": "{hits} მოხვედრა {misses} აცდენის წინააღმდეგ სერვერის გაშვებიდან · თავიდან აცილებულია {requests} მოთხოვნა პროვაიდერთან"
+    "cacheHitRateHint": "{hits} მოხვედრა {misses} აცდენის წინააღმდეგ სერვერის გაშვებიდან · თავიდან აცილებულია {requests} მოთხოვნა პროვაიდერთან",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "ჟურნალი",

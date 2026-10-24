@@ -852,7 +852,9 @@
     "sortHint": "Ang pag-aayos ay para lamang sa {count} na-load na row",
     "cacheHitRate": "Cache hit rate",
     "cacheSavedTokens": "{tokens} token ang natipid",
-    "cacheHitRateHint": "{hits} hit laban sa {misses} miss mula nang magsimula ang server · {requests} tawag sa provider ang naiwasan"
+    "cacheHitRateHint": "{hits} hit laban sa {misses} miss mula nang magsimula ang server · {requests} tawag sa provider ang naiwasan",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Mga Log",

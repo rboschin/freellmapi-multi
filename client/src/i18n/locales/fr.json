@@ -852,7 +852,9 @@
     "sortHint": "Le tri s'applique aux {count} lignes chargées",
     "cacheHitRate": "Taux de succès du cache",
     "cacheSavedTokens": "{tokens} jetons économisés",
-    "cacheHitRateHint": "{hits} succès contre {misses} échecs depuis le démarrage du serveur · {requests} appels au fournisseur évités"
+    "cacheHitRateHint": "{hits} succès contre {misses} échecs depuis le démarrage du serveur · {requests} appels au fournisseur évités",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Journaux",

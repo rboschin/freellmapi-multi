@@ -852,7 +852,9 @@
     "sortHint": "Sortiranje vrijedi za {count} učitanih redaka",
     "cacheHitRate": "Stopa pogodaka predmemorije",
     "cacheSavedTokens": "Ušteđeno {tokens} tokena",
-    "cacheHitRateHint": "{hits} pogodaka naspram {misses} promašaja od pokretanja poslužitelja · izbjegnuto {requests} poziva pružatelju"
+    "cacheHitRateHint": "{hits} pogodaka naspram {misses} promašaja od pokretanja poslužitelja · izbjegnuto {requests} poziva pružatelju",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logovi",

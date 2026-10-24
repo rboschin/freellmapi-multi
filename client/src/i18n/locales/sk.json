@@ -852,7 +852,9 @@
     "sortHint": "Zoradenie sa vzťahuje na {count} načítaných riadkov",
     "cacheHitRate": "Úspešnosť vyrovnávacej pamäte",
     "cacheSavedTokens": "Ušetrených {tokens} tokenov",
-    "cacheHitRateHint": "{hits} zásahov oproti {misses} minutiam od spustenia servera · ušetrených {requests} volaní poskytovateľa"
+    "cacheHitRateHint": "{hits} zásahov oproti {misses} minutiam od spustenia servera · ušetrených {requests} volaní poskytovateľa",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logy",

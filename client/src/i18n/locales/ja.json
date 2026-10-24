@@ -852,7 +852,9 @@
     "sortHint": "並べ替えは読み込み済みの {count} 行にのみ適用されます",
     "cacheHitRate": "キャッシュヒット率",
     "cacheSavedTokens": "{tokens} トークンを節約",
-    "cacheHitRateHint": "サーバー起動以降 {hits} ヒット / {misses} ミス · プロバイダー呼び出し {requests} 回を回避"
+    "cacheHitRateHint": "サーバー起動以降 {hits} ヒット / {misses} ミス · プロバイダー呼び出し {requests} 回を回避",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "ログ",

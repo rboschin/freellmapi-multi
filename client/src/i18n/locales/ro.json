@@ -852,7 +852,9 @@
     "sortHint": "Sortarea se aplică celor {count} rânduri încărcate",
     "cacheHitRate": "Rata de succes a cache-ului",
     "cacheSavedTokens": "{tokens} tokenuri economisite",
-    "cacheHitRateHint": "{hits} accesări reușite față de {misses} ratări de la pornirea serverului · {requests} apeluri către furnizor evitate"
+    "cacheHitRateHint": "{hits} accesări reușite față de {misses} ratări de la pornirea serverului · {requests} apeluri către furnizor evitate",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Jurnale",

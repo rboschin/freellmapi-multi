@@ -626,8 +626,8 @@ export default function AnalyticsPage() {
   })
 
   const { data: byClientProfile = [] } = useQuery({
-    queryKey: ['analytics', 'by-client', range],
-    queryFn: () => apiFetch<ByClientProfileRow[]>(`/api/analytics/by-client?range=${range}`),
+    queryKey: ['analytics', 'by-client-profile', range],
+    queryFn: () => apiFetch<ByClientProfileRow[]>(`/api/analytics/by-client-profile?range=${range}`),
   })
 
   const { data: byKey = [] } = useQuery({
@@ -1234,12 +1234,12 @@ export default function AnalyticsPage() {
           {/* Usage by client profile (client profile tracking). */}
           {byClientProfile.length > 0 && (
             <div className="lg:col-span-2">
-              <Panel icon={Bot} title="Usage by Client Profile">
+              <Panel icon={Bot} title={t('analytics.usageByClientProfile')}>
                 <div className="max-h-[360px] overflow-y-auto -mx-4">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <SortableHeader column="name" label="Client Profile" className="pl-4" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
+                        <SortableHeader column="name" label={t('analytics.clientProfileColumn')} className="pl-4" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
                         <SortableHeader column="requests" label={t('analytics.requests')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
                         <SortableHeader column="success" label={t('common.success')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />
                         <SortableHeader column="latency" label={t('analytics.latency')} align="right" sort={byClientProfileSort.sort} onToggle={byClientProfileSort.toggle} />

@@ -852,7 +852,9 @@
     "sortHint": "A ordenação aplica-se às {count} linhas carregadas",
     "cacheHitRate": "Taxa de acerto da cache",
     "cacheSavedTokens": "{tokens} tokens poupados",
-    "cacheHitRateHint": "{hits} acertos contra {misses} falhas desde o arranque do servidor · {requests} chamadas ao fornecedor evitadas"
+    "cacheHitRateHint": "{hits} acertos contra {misses} falhas desde o arranque do servidor · {requests} chamadas ao fornecedor evitadas",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Registos",

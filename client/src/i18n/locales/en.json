@@ -863,6 +863,8 @@
     "time": "Time",
     "perModelBreakdown": "Per-model breakdown",
     "usageByKey": "Usage by key",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile",
     "keyColumn": "Key",
     "keyLabelFallback": "Key #{id}",
     "errorsByProvider": "Errors by provider",

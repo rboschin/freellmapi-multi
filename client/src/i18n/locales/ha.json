@@ -852,7 +852,9 @@
     "sortHint": "Tsarawar ta shafi layuka {count} da aka ɗora kawai",
     "cacheHitRate": "Yawan nasarar cache",
     "cacheSavedTokens": "An adana tokens {tokens}",
-    "cacheHitRateHint": "Nasara {hits} kan rashi {misses} tun farawar sabar · an guji kiran mai bayarwa {requests}"
+    "cacheHitRateHint": "Nasara {hits} kan rashi {misses} tun farawar sabar · an guji kiran mai bayarwa {requests}",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logs",

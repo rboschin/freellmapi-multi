@@ -852,7 +852,9 @@
     "sortHint": "Sorteringen gjelder de {count} innlastede radene",
     "cacheHitRate": "Cache-treffrate",
     "cacheSavedTokens": "{tokens} tokens spart",
-    "cacheHitRateHint": "{hits} treff mot {misses} bom siden serveren startet · {requests} leverandørkall unngått"
+    "cacheHitRateHint": "{hits} treff mot {misses} bom siden serveren startet · {requests} leverandørkall unngått",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logg",

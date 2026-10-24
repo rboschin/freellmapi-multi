@@ -852,7 +852,9 @@
     "sortHint": "Rikiavimas taikomas {count} įkeltoms eilutėms",
     "cacheHitRate": "Podėlio pataikymų dalis",
     "cacheSavedTokens": "Sutaupyta {tokens} žetonų",
-    "cacheHitRateHint": "{hits} pataikymai prieš {misses} praleidimus nuo serverio paleidimo · išvengta {requests} tiekėjo užklausų"
+    "cacheHitRateHint": "{hits} pataikymai prieš {misses} praleidimus nuo serverio paleidimo · išvengta {requests} tiekėjo užklausų",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Žurnalas",

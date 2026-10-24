@@ -852,7 +852,9 @@
     "sortHint": "A rendezés a betöltött {count} sorra vonatkozik",
     "cacheHitRate": "Gyorsítótár-találati arány",
     "cacheSavedTokens": "{tokens} token megtakarítva",
-    "cacheHitRateHint": "{hits} találat és {misses} tévesztés a szerver indítása óta · {requests} szolgáltatóhívás megspórolva"
+    "cacheHitRateHint": "{hits} találat és {misses} tévesztés a szerver indítása óta · {requests} szolgáltatóhívás megspórolva",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Napló",

@@ -852,7 +852,9 @@
     "sortHint": "Die Sortierung gilt für die {count} geladenen Zeilen",
     "cacheHitRate": "Cache-Trefferquote",
     "cacheSavedTokens": "{tokens} Tokens gespart",
-    "cacheHitRateHint": "{hits} Treffer gegenüber {misses} Fehlschlägen seit dem Serverstart · {requests} Anbieteraufrufe vermieden"
+    "cacheHitRateHint": "{hits} Treffer gegenüber {misses} Fehlschlägen seit dem Serverstart · {requests} Anbieteraufrufe vermieden",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Protokoll",

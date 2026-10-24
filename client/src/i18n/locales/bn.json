@@ -852,7 +852,9 @@
     "sortHint": "সাজানো শুধুমাত্র লোড হওয়া {count}টি সারিতে প্রযোজ্য",
     "cacheHitRate": "ক্যাশ হিট রেট",
     "cacheSavedTokens": "{tokens} টোকেন সাশ্রয়",
-    "cacheHitRateHint": "সার্ভার চালুর পর থেকে {hits} হিট বনাম {misses} মিস · {requests} প্রোভাইডার কল এড়ানো হয়েছে"
+    "cacheHitRateHint": "সার্ভার চালুর পর থেকে {hits} হিট বনাম {misses} মিস · {requests} প্রোভাইডার কল এড়ানো হয়েছে",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "লগ",

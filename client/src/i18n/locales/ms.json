@@ -852,7 +852,9 @@
     "sortHint": "Pengisihan hanya digunakan pada {count} baris yang dimuatkan",
     "cacheHitRate": "Kadar hit cache",
     "cacheSavedTokens": "{tokens} token dijimatkan",
-    "cacheHitRateHint": "{hits} hit berbanding {misses} miss sejak pelayan dimulakan · {requests} panggilan pembekal dielakkan"
+    "cacheHitRateHint": "{hits} hit berbanding {misses} miss sejak pelayan dimulakan · {requests} panggilan pembekal dielakkan",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Log",

@@ -852,7 +852,9 @@
     "sortHint": "క్రమబద్ధీకరణ లోడ్ అయిన {count} వరుసలకు మాత్రమే వర్తిస్తుంది",
     "cacheHitRate": "కాష్ హిట్ రేటు",
     "cacheSavedTokens": "{tokens} టోకెన్‌ల ఆదా",
-    "cacheHitRateHint": "సర్వర్ ప్రారంభమైనప్పటి నుండి {hits} హిట్‌లు, {misses} మిస్‌లు · {requests} ప్రొవైడర్ కాల్‌లు ఆదా అయ్యాయి"
+    "cacheHitRateHint": "సర్వర్ ప్రారంభమైనప్పటి నుండి {hits} హిట్‌లు, {misses} మిస్‌లు · {requests} ప్రొవైడర్ కాల్‌లు ఆదా అయ్యాయి",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "లాగ్‌లు",

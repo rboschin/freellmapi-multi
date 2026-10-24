@@ -852,7 +852,9 @@
     "sortHint": "Η ταξινόμηση ισχύει για τις {count} φορτωμένες γραμμές",
     "cacheHitRate": "Ποσοστό ευστοχίας cache",
     "cacheSavedTokens": "Εξοικονομήθηκαν {tokens} tokens",
-    "cacheHitRateHint": "{hits} ευστοχίες έναντι {misses} αστοχιών από την εκκίνηση του διακομιστή · αποφεύχθηκαν {requests} κλήσεις παρόχου"
+    "cacheHitRateHint": "{hits} ευστοχίες έναντι {misses} αστοχιών από την εκκίνηση του διακομιστή · αποφεύχθηκαν {requests} κλήσεις παρόχου",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Καταγραφές",

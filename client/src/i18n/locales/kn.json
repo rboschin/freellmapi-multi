@@ -852,7 +852,9 @@
     "sortHint": "ವಿಂಗಡಣೆ ಲೋಡ್ ಆದ {count} ಸಾಲುಗಳಿಗೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ",
     "cacheHitRate": "ಕ್ಯಾಶ್ ಹಿಟ್ ದರ",
     "cacheSavedTokens": "{tokens} ಟೋಕನ್‌ಗಳ ಉಳಿತಾಯ",
-    "cacheHitRateHint": "ಸರ್ವರ್ ಪ್ರಾರಂಭವಾದಾಗಿನಿಂದ {hits} ಹಿಟ್‌ಗಳು ಮತ್ತು {misses} ಮಿಸ್‌ಗಳು · {requests} ಪೂರೈಕೆದಾರ ಕರೆಗಳನ್ನು ತಪ್ಪಿಸಲಾಗಿದೆ"
+    "cacheHitRateHint": "ಸರ್ವರ್ ಪ್ರಾರಂಭವಾದಾಗಿನಿಂದ {hits} ಹಿಟ್‌ಗಳು ಮತ್ತು {misses} ಮಿಸ್‌ಗಳು · {requests} ಪೂರೈಕೆದಾರ ಕರೆಗಳನ್ನು ತಪ್ಪಿಸಲಾಗಿದೆ",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "ಲಾಗ್‌ಗಳು",

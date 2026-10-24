@@ -852,7 +852,9 @@
     "sortHint": "Nhazi ahụ metụtara naanị ahịrị {count} ebugoro",
     "cacheHitRate": "Ọnụọgụ hit nke cache",
     "cacheSavedTokens": "Echekwara token {tokens}",
-    "cacheHitRateHint": "{hits} hit megide {misses} miss kemgbe sava malitere · ezere oku onye na-enye ozi {requests}"
+    "cacheHitRateHint": "{hits} hit megide {misses} miss kemgbe sava malitere · ezere oku onye na-enye ozi {requests}",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Ndekọ",

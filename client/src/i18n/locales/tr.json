@@ -852,7 +852,9 @@
     "sortHint": "Sıralama yalnızca yüklenen {count} satıra uygulanır",
     "cacheHitRate": "Önbellek isabet oranı",
     "cacheSavedTokens": "{tokens} token tasarruf edildi",
-    "cacheHitRateHint": "Sunucu başlatıldığından beri {hits} isabet, {misses} ıskalama · {requests} sağlayıcı çağrısından kaçınıldı"
+    "cacheHitRateHint": "Sunucu başlatıldığından beri {hits} isabet, {misses} ıskalama · {requests} sağlayıcı çağrısından kaçınıldı",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Günlükler",

@@ -852,7 +852,9 @@
     "sortHint": "Lajittelu koskee vain ladattuja {count} riviä",
     "cacheHitRate": "Välimuistin osumaprosentti",
     "cacheSavedTokens": "{tokens} tokenia säästetty",
-    "cacheHitRateHint": "{hits} osumaa vs. {misses} ohitusta palvelimen käynnistyksestä · {requests} palveluntarjoajan kutsua vältetty"
+    "cacheHitRateHint": "{hits} osumaa vs. {misses} ohitusta palvelimen käynnistyksestä · {requests} palveluntarjoajan kutsua vältetty",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Lokit",

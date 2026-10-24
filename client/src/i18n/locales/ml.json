@@ -852,7 +852,9 @@
     "sortHint": "ക്രമീകരണം ലോഡ് ചെയ്ത {count} വരികൾക്ക് മാത്രമേ ബാധകമാകൂ",
     "cacheHitRate": "കാഷ് ഹിറ്റ് നിരക്ക്",
     "cacheSavedTokens": "{tokens} ടോക്കണുകൾ ലാഭിച്ചു",
-    "cacheHitRateHint": "സെർവർ ആരംഭിച്ചതിനുശേഷം {hits} ഹിറ്റുകൾ, {misses} മിസ്സുകൾ · {requests} ദാതാവ് കോളുകൾ ഒഴിവാക്കി"
+    "cacheHitRateHint": "സെർവർ ആരംഭിച്ചതിനുശേഷം {hits} ഹിറ്റുകൾ, {misses} മിസ്സുകൾ · {requests} ദാതാവ് കോളുകൾ ഒഴിവാക്കി",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "ലോഗുകൾ",

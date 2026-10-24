@@ -852,7 +852,9 @@
     "sortHint": "ગોઠવણી ફક્ત લોડ થયેલી {count} પંક્તિઓ પર લાગુ થાય છે",
     "cacheHitRate": "કૅશ હિટ રેટ",
     "cacheSavedTokens": "{tokens} ટોકન બચ્યા",
-    "cacheHitRateHint": "સર્વર શરૂ થયા પછી {hits} હિટ સામે {misses} મિસ · {requests} પ્રોવાઇડર કૉલ ટાળ્યા"
+    "cacheHitRateHint": "સર્વર શરૂ થયા પછી {hits} હિટ સામે {misses} મિસ · {requests} પ્રોવાઇડર કૉલ ટાળ્યા",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "લોગ",

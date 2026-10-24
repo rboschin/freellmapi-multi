@@ -852,7 +852,9 @@
     "sortHint": "Řazení se vztahuje na {count} načtených řádků",
     "cacheHitRate": "Úspěšnost cache",
     "cacheSavedTokens": "Ušetřeno {tokens} tokenů",
-    "cacheHitRateHint": "{hits} zásahů proti {misses} minutím od spuštění serveru · ušetřeno {requests} volání poskytovatele"
+    "cacheHitRateHint": "{hits} zásahů proti {misses} minutím od spuštění serveru · ušetřeno {requests} volání poskytovatele",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Logy",

@@ -852,7 +852,9 @@
     "sortHint": "Sorteringen gælder de {count} indlæste rækker",
     "cacheHitRate": "Cache-hitrate",
     "cacheSavedTokens": "{tokens} tokens sparet",
-    "cacheHitRateHint": "{hits} hits mod {misses} misses siden serveren startede · {requests} udbyderkald undgået"
+    "cacheHitRateHint": "{hits} hits mod {misses} misses siden serveren startede · {requests} udbyderkald undgået",
+    "usageByClientProfile": "Usage by client profile",
+    "clientProfileColumn": "Client profile"
   },
   "logs": {
     "title": "Log",
