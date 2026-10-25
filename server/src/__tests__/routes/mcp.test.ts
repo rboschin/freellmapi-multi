@@ -115,9 +115,11 @@ describe('MCP server (/mcp, stateless Streamable HTTP)', () => {
     db.prepare(`INSERT INTO requests (platform, model_id, status, input_tokens, output_tokens, created_at)
                 VALUES ('groq', 'test-model', 'success', 100, 50, ?)`).run(sqlite(boundaryDayRow));
     const hour = sqlite(boundaryDayRow).slice(0, 13) + ':00:00';
+    // Conflict target mirrors lib/request-log.logRequest: the key is
+    // (hour, client_profile_id) with NULLs folded by ifnull().
     db.prepare(`INSERT INTO request_hourly (hour, total_requests, success_count, input_tokens, output_tokens)
                 VALUES (?, 1, 1, 100, 50)
-                ON CONFLICT(hour) DO UPDATE SET total_requests = total_requests + 1`).run(hour);
+                ON CONFLICT(hour, ifnull(client_profile_id, -1)) DO UPDATE SET total_requests = total_requests + 1`).run(hour);
 
     const { body } = await rpc({
       jsonrpc: '2.0', id: 12, method: 'tools/call',

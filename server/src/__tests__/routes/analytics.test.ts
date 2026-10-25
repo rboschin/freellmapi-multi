@@ -63,10 +63,13 @@ function upsertAggregate(
   const hour = createdAt.slice(0, 13) + ':00:00';
   const isSuccess = status === 'success' ? 1 : 0;
   const isError = status === 'error' ? 1 : 0;
+  // Same conflict target as lib/request-log.logRequest: `ON CONFLICT(hour)`
+  // matches no unique constraint once the key became (hour, client_profile_id),
+  // and a bare column list can't collapse the NULL profile bucket at all.
   db.prepare(`
     INSERT INTO request_hourly (hour, total_requests, success_count, error_count, input_tokens, output_tokens)
     VALUES (?, 1, ?, ?, ?, ?)
-    ON CONFLICT(hour) DO UPDATE SET
+    ON CONFLICT(hour, ifnull(client_profile_id, -1)) DO UPDATE SET
       total_requests = total_requests + 1,
       success_count  = success_count + ?,
       error_count    = error_count + ?,
@@ -168,6 +171,37 @@ describe('Analytics API', () => {
     expect(body.successRate).toBe(66.7);
     // Lifetime counter is window-independent; sourced from settings, not buckets.
     expect(body.lifetimeTotalRequests).toBe(3);
+  });
+
+  // Regression for the NULL profile bucket: client_profile_id sits in
+  // request_hourly's primary key, and SQLite counts NULLs as distinct there,
+  // so ON CONFLICT(hour, client_profile_id) never fired for a request logged
+  // WITHOUT a profile — each one appended its own row for the same hour
+  // instead of merging. The uniqueness now lives on an ifnull() expression
+  // index, which can actually collapse NULL.
+  it('folds repeated unprofiled requests into a single hourly row', async () => {
+    vi.useRealTimers();
+    logRequest('groq', 'llama-3.3-70b-versatile', 0, 'success', 100, 50, 12, null);
+    logRequest('groq', 'llama-3.3-70b-versatile', 0, 'success', 200, 70, 15, null);
+    logRequest('groq', 'llama-3.3-70b-versatile', 0, 'error', 30, 0, 9, 'boom');
+
+    // The clock can tick an hour boundary mid-test, so assert the invariant
+    // rather than a bucket count: never more than one row per hour.
+    const buckets = getDb()
+      .prepare('SELECT hour, COUNT(*) AS n, SUM(total_requests) AS total FROM request_hourly GROUP BY hour')
+      .all() as Array<{ hour: string; n: number; total: number }>;
+    expect(buckets.length).toBeGreaterThanOrEqual(1);
+    for (const bucket of buckets) expect(bucket.n).toBe(1);
+    expect(buckets.reduce((sum, bucket) => sum + bucket.total, 0)).toBe(3);
+
+    // And the index itself is the guard, not just the writer's behaviour.
+    const index = getDb()
+      .prepare("SELECT sql FROM sqlite_master WHERE type='index' AND name='idx_request_hourly_hour_profile'")
+      .get() as { sql: string } | undefined;
+    expect(index?.sql).toContain('ifnull(client_profile_id, -1)');
+    expect(() =>
+      getDb().prepare('INSERT INTO request_hourly (hour, client_profile_id) VALUES (?, NULL)').run(buckets[0].hour),
+    ).toThrow(/UNIQUE/i);
   });
 
   it("counts 'canceled' rows in totals but in no success/error rate (#752)", async () => {

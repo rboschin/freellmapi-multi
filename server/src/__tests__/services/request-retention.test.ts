@@ -116,13 +116,13 @@ describe('request analytics retention', () => {
 
   it('prunes hourly aggregate rows older than 30 days and only when the daily gate has elapsed', () => {
     // Hourly buckets never auto-create themselves in this test (logRequest is
-    // the only writer), so seed them by hand to exercise the prune path.
+    // the only writer), so seed them by hand to exercise the prune path. The
+    // table itself comes from the migrations — its key is
+    // (hour, client_profile_id) with NULLs folded by ifnull(), the same
+    // target lib/request-log.logRequest upserts on.
     const db = getDb();
-    db.prepare(`CREATE TABLE IF NOT EXISTS request_hourly (
-      hour TEXT PRIMARY KEY, total_requests INTEGER NOT NULL DEFAULT 0
-    )`).run();
     const upsert = db.prepare(`INSERT INTO request_hourly (hour, total_requests) VALUES (?, ?)
-      ON CONFLICT(hour) DO UPDATE SET total_requests = excluded.total_requests`);
+      ON CONFLICT(hour, ifnull(client_profile_id, -1)) DO UPDATE SET total_requests = excluded.total_requests`);
     // Seed in the same 'YYYY-MM-DD HH:00:00' (space) format production writes,
     // so the prune cutoff (also space) compares apples-to-apples.
     upsert.run('2026-05-01 00:00:00', 5);   // outside 30d window from May 31

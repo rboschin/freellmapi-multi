@@ -135,10 +135,16 @@ export function logRequest(
       const isSuccess = status === 'success' ? 1 : 0;
       const isError = status === 'error' ? 1 : 0;
 
+      // The conflict target must match idx_request_hourly_hour_profile
+      // verbatim: `ON CONFLICT(hour, client_profile_id)` never fires for a
+      // NULL profile, because SQLite treats NULLs as distinct even inside a
+      // primary key — so every unprofiled request appended a fresh row for
+      // the same hour instead of merging. ifnull() collapses that bucket onto
+      // a single value the unique index can actually hold.
       db.prepare(`
         INSERT INTO request_hourly (hour, client_profile_id, total_requests, success_count, error_count, input_tokens, output_tokens)
         VALUES (?, ?, 1, ?, ?, ?, ?)
-        ON CONFLICT(hour, client_profile_id) DO UPDATE SET
+        ON CONFLICT(hour, ifnull(client_profile_id, -1)) DO UPDATE SET
           total_requests = total_requests + 1,
           success_count  = success_count + ?,
           error_count    = error_count + ?,

@@ -53,7 +53,7 @@ interface ProfileRow {
  * disabled profile is rejected exactly like an unknown key so a revoked
  * client can't distinguish "disabled" from "deleted".
  */
-import { getClientContext, setClientProfileId } from './client-context.js';
+import { setClientProfileId } from './client-context.js';
 
 export function resolveAuth(token: string | undefined): ResolvedAuth | null {
   if (!token) return null;

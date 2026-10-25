@@ -21,6 +21,11 @@ function tableExists(db: Db, name: string): boolean {
     .get(name);
 }
 
+function hasColumn(db: Db, table: string, column: string): boolean {
+  const columns = db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[];
+  return columns.some(col => col.name === column);
+}
+
 function hourKey(createdAt: string): string {
   // SQLite stores created_at as 'YYYY-MM-DD HH:MM:SS' (UTC). Truncate to hour.
   return createdAt.slice(0, 13) + ':00:00';
@@ -48,6 +53,22 @@ export function up(db: Db): void {
   // before this migration ran are gone for good from the aggregate, but the
   // lifetime counters below will still be seeded with current totals.
   if (tableExists(db, 'requests')) {
+    // Shape-aware because catalog-sync re-runs this migration over a live
+    // schema: by then 20261024 has rebuilt request_hourly around
+    // (hour, client_profile_id) and 20261025 has pinned uniqueness on
+    // ifnull(client_profile_id, -1). Naming `ON CONFLICT(hour)` there matches
+    // no unique constraint and aborts the re-run, and omitting the profile
+    // column would fold already-profiled traffic into the NULL bucket.
+    const profiled = hasColumn(db, 'request_hourly', 'client_profile_id');
+    const profileSelect = profiled ? `,
+        COALESCE(client_profile_id, -1) AS client_profile_id` : '';
+    const profileGroup = profiled ? `,
+        COALESCE(client_profile_id, -1)` : '';
+    const profileInsert = profiled ? `,
+        client_profile_id` : '';
+    const profileValue = profiled ? `,
+        @client_profile_id` : '';
+
     const bucket = db.prepare(`
       SELECT
         substr(created_at, 1, 13) || ':00:00' AS hour,
@@ -55,11 +76,12 @@ export function up(db: Db): void {
         SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) AS success_count,
         SUM(CASE WHEN status = 'error' THEN 1 ELSE 0 END) AS error_count,
         COALESCE(SUM(input_tokens), 0) AS input_tokens,
-        COALESCE(SUM(output_tokens), 0) AS output_tokens
+        COALESCE(SUM(output_tokens), 0) AS output_tokens${profileSelect}
       FROM requests
-      GROUP BY substr(created_at, 1, 13)
+      GROUP BY substr(created_at, 1, 13)${profileGroup}
     `).all() as Array<{
       hour: string;
+      client_profile_id?: number | null;
       total_requests: number;
       success_count: number;
       error_count: number;
@@ -68,9 +90,9 @@ export function up(db: Db): void {
     }>;
 
     const upsert = db.prepare(`
-      INSERT INTO request_hourly (hour, total_requests, success_count, error_count, input_tokens, output_tokens)
-      VALUES (@hour, @total_requests, @success_count, @error_count, @input_tokens, @output_tokens)
-      ON CONFLICT(hour) DO UPDATE SET
+      INSERT INTO request_hourly (hour, total_requests, success_count, error_count, input_tokens, output_tokens${profileInsert})
+      VALUES (@hour, @total_requests, @success_count, @error_count, @input_tokens, @output_tokens${profileValue})
+      ON CONFLICT${profiled ? '(hour, ifnull(client_profile_id, -1))' : '(hour)'} DO UPDATE SET
         total_requests = excluded.total_requests,
         success_count  = excluded.success_count,
         error_count    = excluded.error_count,
