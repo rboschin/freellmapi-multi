@@ -228,6 +228,71 @@ interface ByClientProfileRow {
   totalOutputTokens: number
 }
 
+interface ProfileTimelineBucket {
+  timestamp: string
+  requests: number
+}
+
+// One row per (bucket, profile) pair from GET /api/analytics/by-client-profile-timeline.
+interface ProfileTimelineRow {
+  timestamp: string
+  profileId: number
+  name: string | null
+  requests: number
+}
+
+function ProfileTimelineDialog({ profile, range, onClose }: { profile: { id: number; name: string | null } | null; range: TimeRange; onClose: () => void }) {
+  const { t } = useI18n()
+  // Same wall-clock bucketing as the dashboard's other timeline charts, so the
+  // drill-down lines up bucket-for-bucket with the overview chart behind it.
+  const tzOffset = -new Date().getTimezoneOffset()
+
+  const { data: timeline = [], isLoading } = useQuery({
+    queryKey: ['analytics', 'by-client-profile', profile?.id, 'timeline', range, tzOffset],
+    queryFn: () => apiFetch<ProfileTimelineBucket[]>(`/api/analytics/by-client-profile/${profile?.id}/timeline?range=${range}&tzOffset=${tzOffset}`),
+    enabled: profile != null,
+  })
+
+  return (
+    <Dialog open={profile != null} onOpenChange={(open) => { if (!open) onClose() }}>
+      {/* The popup renders through a portal, OUTSIDE the page's `.analytics-viz`
+          wrapper — carrying the class here too so --series-a/--series-b (the
+          chart stroke colors) still resolve inside the dialog. */}
+      <DialogPopup maxWidth="max-w-2xl" className="analytics-viz">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <ChartLine className="size-4 text-muted-foreground" aria-hidden="true" />
+            <DialogTitle>{profile?.name ?? `#${profile?.id}`}</DialogTitle>
+          </div>
+          <DialogClose
+            aria-label={t('common.dismiss')}
+            className="-mr-1 rounded-lg p-1 text-muted-foreground/70 transition-colors outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+            onClick={onClose}
+          >
+            <X className="size-4" />
+          </DialogClose>
+        </div>
+        
+        {isLoading ? (
+          <Skeleton className="h-64 rounded-xl" />
+        ) : timeline.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-8">{t('common.noData')}</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={timeline} margin={{ top: 6, right: 6, left: -12, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="2 4" stroke={gridStyle} />
+              <XAxis dataKey="timestamp" type="category" tick={axisStyle} tickLine={false} axisLine={{ stroke: gridStyle }} tickFormatter={formatTimelineTick} allowDuplicatedCategory={false} />
+              <YAxis tick={axisStyle} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Line type="monotone" dataKey="requests" name={t('analytics.requests')} stroke={seriesA} strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </DialogPopup>
+    </Dialog>
+  )
+}
+
 type ByClientProfileCol = 'name' | 'requests' | 'success' | 'latency' | 'inTokens' | 'outTokens'
 const BY_CLIENT_PROFILE_COLS: readonly ByClientProfileCol[] = ['name', 'requests', 'success', 'latency', 'inTokens', 'outTokens']
 const BY_CLIENT_PROFILE_SORT_KEY = 'analytics.byClientProfileSort'
@@ -572,6 +637,21 @@ const chartVars = `
 .dark .analytics-viz { --series-a: #3987e5; --series-b: #199e70; }
 `
 
+// Line hues for the per-profile overview chart, where an unknown number of
+// series share one panel. Ordered Okabe-Ito (built for colour-vision
+// deficiency) minus the yellow — unreadable on the light card — so seven
+// hues cover the common case and repeat past that; the legend and tooltip
+// carry the profile name when two lines happen to share a colour.
+const profileSeriesColors = [
+  '#0072b2',
+  '#009e73',
+  '#d55e00',
+  '#cc79a7',
+  '#56b4e9',
+  '#e69f00',
+  '#7b5cd6',
+]
+
 export default function AnalyticsPage() {
   const { t } = useI18n()
   const [range, setRange] = useState<TimeRange>(storedRange)
@@ -630,6 +710,14 @@ export default function AnalyticsPage() {
     queryFn: () => apiFetch<ByClientProfileRow[]>(`/api/analytics/by-client-profile?range=${range}`),
   })
 
+  // Every profile on one shared timeline, for the overview chart. The table
+  // above stays the per-profile navigation hub; this panel shows the shape of
+  // total usage split across profiles.
+  const { data: profileTimeline = [] } = useQuery({
+    queryKey: ['analytics', 'by-client-profile-timeline', range, tzOffset],
+    queryFn: () => apiFetch<ProfileTimelineRow[]>(`/api/analytics/by-client-profile-timeline?range=${range}&tzOffset=${tzOffset}`),
+  })
+
   const { data: byKey = [] } = useQuery({
     queryKey: ['analytics', 'by-key', range],
     queryFn: () => apiFetch<ByKeyRow[]>(`/api/analytics/by-key?range=${range}`),
@@ -660,6 +748,7 @@ export default function AnalyticsPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [platformFilter, setPlatformFilter] = useState<string>('all')
   const [detailId, setDetailId] = useState<number | null>(null)
+  const [selectedProfile, setSelectedProfile] = useState<{ id: number; name: string | null } | null>(null)
 
   const { data: recentCalls } = useQuery({
     queryKey: ['analytics', 'requests', range, statusFilter, platformFilter],
@@ -689,6 +778,34 @@ export default function AnalyticsPage() {
     () => sortRows(byClientProfile, byClientProfileSort.sort, byClientProfileValue),
     [byClientProfile, byClientProfileSort.sort],
   )
+  // Recharts wants one row per x-tick with a column per line, while the API
+  // returns one row per (bucket, profile). Pivot here: union of timestamps on
+  // the x axis, a `p<id>` column per profile, absent buckets filled with 0
+  // (no requests in that bucket, not "no data") so lines stay unbroken.
+  // Profiles land in the legend biggest-first, which also keeps the colour
+  // assignment stable across ranges instead of following whichever profile
+  // happens to appear earliest in time.
+  const profileTimelineChart = useMemo(() => {
+    if (profileTimeline.length === 0) return { rows: [] as Record<string, number | string>[], profiles: [] as [number, string][] }
+    const counts = new Map<string, Map<number, number>>()
+    const totals = new Map<number, number>()
+    const labels = new Map<number, string>()
+    for (const row of profileTimeline) {
+      labels.set(row.profileId, row.name ?? `#${row.profileId}`)
+      totals.set(row.profileId, (totals.get(row.profileId) ?? 0) + row.requests)
+      let perProfile = counts.get(row.timestamp)
+      if (!perProfile) counts.set(row.timestamp, (perProfile = new Map()))
+      perProfile.set(row.profileId, row.requests)
+    }
+    const ids = [...totals.keys()].sort((a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0))
+    const rows = [...counts.keys()].sort().map((timestamp) => {
+      const bucket = counts.get(timestamp)!
+      const point: Record<string, number | string> = { timestamp }
+      for (const id of ids) point[`p${id}`] = bucket.get(id) ?? 0
+      return point
+    })
+    return { rows, profiles: ids.map((id) => [id, labels.get(id) ?? `#${id}`] as [number, string]) }
+  }, [profileTimeline])
   // The list is capped at 100 rows while `total` counts the whole filtered
   // set; say so while a sort is active and there is more than what's loaded.
   const recentCallsSortHint = recentCallsSort.sort && recentCalls && recentCalls.total > recentCalls.rows.length
@@ -1249,9 +1366,17 @@ export default function AnalyticsPage() {
                     </TableHeader>
                     <TableBody>
                       {byClientProfileRows.map((c) => (
-                        <TableRow key={c.profileId}>
+                        <TableRow
+                          key={c.profileId}
+                          onClick={() => setSelectedProfile({ id: c.profileId, name: c.name })}
+                          className="cursor-pointer hover:bg-muted/50 transition-colors"
+                        >
                           <TableCell className="pl-4 text-sm font-medium">
-                            {c.name || `#${c.profileId}`}
+                            <span className="flex items-center gap-2">
+                              {/* Marks the row as a chart drill-down affordance. */}
+                              <ChartLine className="size-3.5 shrink-0 text-muted-foreground/70" aria-hidden="true" />
+                              {c.name || `#${c.profileId}`}
+                            </span>
                           </TableCell>
                           <TableCell className="text-right tabular-nums">{c.requests}</TableCell>
                           <TableCell className="text-right tabular-nums">{c.successRate}%</TableCell>
@@ -1263,6 +1388,35 @@ export default function AnalyticsPage() {
                     </TableBody>
                   </Table>
                 </div>
+              </Panel>
+            </div>
+          )}
+
+          {/* Same timeline as the requests chart, split into one line per client
+              profile — the global view; the table above is the per-profile one. */}
+          {profileTimeline.length > 0 && (
+            <div className="lg:col-span-2">
+              <Panel icon={ChartLine} title={t('analytics.clientProfileTimeline')}>
+                <ResponsiveContainer width="100%" height={240}>
+                  <LineChart data={profileTimelineChart.rows} margin={{ top: 6, right: 6, left: -12, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="2 4" stroke={gridStyle} />
+                    <XAxis dataKey="timestamp" type="category" tick={axisStyle} tickLine={false} axisLine={{ stroke: gridStyle }} tickFormatter={formatTimelineTick} allowDuplicatedCategory={false} />
+                    <YAxis tick={axisStyle} tickLine={false} axisLine={false} />
+                    <Tooltip contentStyle={tooltipStyle} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} iconType="line" />
+                    {profileTimelineChart.profiles.map(([id, label], index) => (
+                      <Line
+                        key={id}
+                        type="monotone"
+                        dataKey={`p${id}`}
+                        name={label}
+                        stroke={profileSeriesColors[index % profileSeriesColors.length]}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
               </Panel>
             </div>
           )}
@@ -1308,6 +1462,7 @@ export default function AnalyticsPage() {
       </div>
 
       <RequestDetailDialog requestId={detailId} onClose={() => setDetailId(null)} />
+      <ProfileTimelineDialog profile={selectedProfile} range={range} onClose={() => setSelectedProfile(null)} />
     </div>
   )
 }

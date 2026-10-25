@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ટોકન બચ્યા",
     "cacheHitRateHint": "સર્વર શરૂ થયા પછી {hits} હિટ સામે {misses} મિસ · {requests} પ્રોવાઇડર કૉલ ટાળ્યા",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

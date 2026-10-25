@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Ušetrených {tokens} tokenov",
     "cacheHitRateHint": "{hits} zásahov oproti {misses} minutiam od spustenia servera · ušetrených {requests} volaní poskytovateľa",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

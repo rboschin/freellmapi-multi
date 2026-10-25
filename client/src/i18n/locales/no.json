@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} tokens spart",
     "cacheHitRateHint": "{hits} treff mot {misses} bom siden serveren startet · {requests} leverandørkall unngått",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

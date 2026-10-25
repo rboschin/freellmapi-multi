@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Tokeni {tokens} zimehifadhiwa",
     "cacheHitRateHint": "Mafanikio {hits} dhidi ya makosa {misses} tangu seva ianze · miito {requests} kwa mtoa huduma imeepukwa",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

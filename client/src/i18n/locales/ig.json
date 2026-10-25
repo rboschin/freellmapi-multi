@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Echekwara token {tokens}",
     "cacheHitRateHint": "{hits} hit megide {misses} miss kemgbe sava malitere · ezere oku onye na-enye ozi {requests}",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

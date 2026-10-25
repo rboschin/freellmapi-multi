@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} tokenia säästetty",
     "cacheHitRateHint": "{hits} osumaa vs. {misses} ohitusta palvelimen käynnistyksestä · {requests} palveluntarjoajan kutsua vältetty",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

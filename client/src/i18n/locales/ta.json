@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} டோக்கன்கள் சேமிக்கப்பட்டன",
     "cacheHitRateHint": "சேவையகம் தொடங்கியதிலிருந்து {hits} வெற்றி, {misses} தோல்வி · {requests} வழங்குநர் அழைப்புகள் தவிர்க்கப்பட்டன",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

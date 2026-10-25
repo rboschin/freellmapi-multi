@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ਟੋਕਨ ਬਚਾਏ",
     "cacheHitRateHint": "ਸਰਵਰ ਚਾਲੂ ਹੋਣ ਤੋਂ ਬਾਅਦ {hits} ਹਿੱਟ ਬਨਾਮ {misses} ਮਿਸ · {requests} ਪ੍ਰਦਾਤਾ ਕਾਲਾਂ ਬਚਾਈਆਂ",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

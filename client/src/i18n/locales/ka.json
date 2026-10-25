@@ -854,6 +854,7 @@
     "cacheSavedTokens": "დაზოგილია {tokens} ტოკენი",
     "cacheHitRateHint": "{hits} მოხვედრა {misses} აცდენის წინააღმდეგ სერვერის გაშვებიდან · თავიდან აცილებულია {requests} მოთხოვნა პროვაიდერთან",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

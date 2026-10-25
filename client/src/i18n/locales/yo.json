@@ -854,6 +854,7 @@
     "cacheSavedTokens": "A ṣàfipamọ́ token {tokens}",
     "cacheHitRateHint": "{hits} àṣeyọrí sí {misses} àìní láti ìgbà tí sáfà bẹ̀rẹ̀ · {requests} ìpè olùpèsè ni a yẹ̀ sílẹ̀",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

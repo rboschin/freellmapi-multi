@@ -864,6 +864,7 @@
     "perModelBreakdown": "Per-model breakdown",
     "usageByKey": "Usage by key",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile",
     "keyColumn": "Key",
     "keyLabelFallback": "Key #{id}",

@@ -895,4 +895,84 @@ describe('Analytics API', () => {
       expect(dupStatus.status).toBe(200);
     });
   });
+
+  // The dashboard shows client-profile usage twice: one line per profile in the
+  // overview panel, and the same bucketing reopened per profile from a table
+  // row. Both routes therefore read the raw `requests` table (matching the
+  // by-client-profile table beside them) and share the tzOffset bucketing, so
+  // the two charts have to agree bucket-for-bucket.
+  describe('client-profile timelines', () => {
+    function seedProfile(name: string): number {
+      const db = getDb();
+      const info = db.prepare(`
+        INSERT INTO client_profiles (name, token_hash, encrypted_key, iv, auth_tag)
+        VALUES (?, ?, 'enc', 'iv', 'tag')
+      `).run(name, `hash-${name}-${Math.random()}`);
+      return Number(info.lastInsertRowid);
+    }
+
+    function seedProfiledRequest(profileId: number | null, createdAt: string) {
+      getDb().prepare(`
+        INSERT INTO requests (platform, model_id, status, input_tokens, output_tokens, latency_ms, error, created_at, client_profile_id)
+        VALUES ('test', 'test-model', 'success', 1, 2, 3, NULL, ?, ?)
+      `).run(createdAt, profileId);
+    }
+
+    beforeEach(() => {
+      getDb().prepare('DELETE FROM client_profiles').run();
+    });
+
+    it('emits one row per (bucket, profile), tagged with the profile name', async () => {
+      const laptop = seedProfile('laptop');
+      const phone = seedProfile('phone');
+      seedProfiledRequest(laptop, '2026-05-29 11:05:00');
+      seedProfiledRequest(laptop, '2026-05-29 11:59:00');
+      seedProfiledRequest(phone, '2026-05-29 11:30:00');
+      seedProfiledRequest(null, '2026-05-29 11:45:00'); // unattributed: no line
+
+      const { status, body } = await request(app, '/api/analytics/by-client-profile-timeline?range=7d&interval=hour');
+      expect(status).toBe(200);
+      // Ordered by profile id: the route only sorts on the bucket.
+      expect([...body].sort((a: any, b: any) => a.profileId - b.profileId)).toEqual([
+        { timestamp: '2026-05-29T11:00:00', profileId: laptop, name: 'laptop', requests: 2 },
+        { timestamp: '2026-05-29T11:00:00', profileId: phone, name: 'phone', requests: 1 },
+      ]);
+    });
+
+    it('shifts both charts to the viewer timezone together', async () => {
+      const laptop = seedProfile('laptop');
+      seedProfiledRequest(laptop, '2026-05-28 17:30:00'); // UTC 17:00 → UTC+8 05-29 01:00
+
+      const utc = await request(app, '/api/analytics/by-client-profile-timeline?range=7d&interval=hour');
+      expect(utc.body.map((r: any) => r.timestamp)).toEqual(['2026-05-28T17:00:00']);
+
+      const local = await request(app, '/api/analytics/by-client-profile-timeline?range=7d&interval=hour&tzOffset=480');
+      expect(local.body.map((r: any) => r.timestamp)).toEqual(['2026-05-29T01:00:00']);
+
+      const drillDown = await request(app, `/api/analytics/by-client-profile/${laptop}/timeline?range=7d&interval=hour&tzOffset=480`);
+      expect(drillDown.body.map((b: any) => b.timestamp)).toEqual(['2026-05-29T01:00:00']);
+      expect(drillDown.body.map((b: any) => b.requests)).toEqual([1]);
+    });
+
+    it('totals the overview to the by-client-profile table', async () => {
+      const laptop = seedProfile('laptop');
+      seedProfiledRequest(laptop, '2026-05-28 10:00:00');
+      seedProfiledRequest(laptop, '2026-05-29 10:00:00');
+
+      const table = await request(app, '/api/analytics/by-client-profile?range=7d');
+      const timeline = await request(app, '/api/analytics/by-client-profile-timeline?range=7d&interval=hour');
+
+      const fromTable = table.body.find((r: any) => r.profileId === laptop);
+      const fromTimeline = timeline.body
+        .filter((r: any) => r.profileId === laptop)
+        .reduce((sum: number, r: any) => sum + r.requests, 0);
+      expect(fromTable.requests).toBe(2);
+      expect(fromTimeline).toBe(fromTable.requests);
+    });
+
+    it('rejects a non-integer profile id on the drill-down route', async () => {
+      const bad = await request(app, '/api/analytics/by-client-profile/1%20OR%201=1/timeline?range=7d');
+      expect(bad.status).toBe(400);
+    });
+  });
 });

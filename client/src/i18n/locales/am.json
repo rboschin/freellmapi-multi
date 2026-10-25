@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ቶከን ተቆጥቧል",
     "cacheHitRateHint": "አገልጋዩ ከተጀመረ ወዲህ {hits} ግኝት እና {misses} ስህተት · {requests} የአቅራቢ ጥሪዎች ተስወግደዋል",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

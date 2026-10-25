@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token qənaət edildi",
     "cacheHitRateHint": "Server başladığından bəri {hits} uğur, {misses} uğursuzluq · {requests} provayder sorğusundan qaçınıldı",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

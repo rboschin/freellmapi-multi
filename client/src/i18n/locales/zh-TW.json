@@ -854,6 +854,7 @@
     "cacheSavedTokens": "已節省 {tokens} Token",
     "cacheHitRateHint": "自伺服器啟動以來命中 {hits} 次、未命中 {misses} 次 · 省下 {requests} 次供應商呼叫",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

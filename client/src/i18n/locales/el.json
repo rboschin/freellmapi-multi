@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Εξοικονομήθηκαν {tokens} tokens",
     "cacheHitRateHint": "{hits} ευστοχίες έναντι {misses} αστοχιών από την εκκίνηση του διακομιστή · αποφεύχθηκαν {requests} κλήσεις παρόχου",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

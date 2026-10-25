@@ -484,25 +484,91 @@ analyticsRouter.get('/by-client-profile', (req: Request, res: Response) => {
   })));
 });
 
-// Timeline data
-analyticsRouter.get('/timeline', (req: Request, res: Response) => {
+// Bucketing shared by every timeline endpoint: the viewer's local offset from
+// UTC (so hour/day boundaries follow their wall clock rather than UTC) and the
+// bucket size, defaulting to hourly for the 24h window and daily beyond it.
+// tzOffset is whitelisted to a sane integer range and bound as a parameter,
+// never interpolated into SQL. dateFormat comes from a hardcoded whitelist.
+//
+// The single current offset applies to the whole range (SQLite has no tz
+// database), so buckets on the far side of a DST transition sit 1h off.
+function timelineBucketing(req: Request) {
   const range = (req.query.range as string) ?? '7d';
   const interval = (req.query.interval as string) ?? (range === '24h' ? 'hour' : 'day');
   const since = getSinceTimestamp(range);
-  const db = getDb();
-
-  // dateFormat is a hardcoded whitelist — never user-controlled.
   const dateFormat = interval === 'hour' ? '%Y-%m-%dT%H:00:00' : '%Y-%m-%d';
 
   // tzOffset: viewer's local offset from UTC in minutes (480 = UTC+8), sent by
-  // the browser so hour/day bucket boundaries follow the viewer's wall clock
-  // instead of UTC. Whitelisted to a sane integer range; bound as a parameter,
-  // never interpolated into SQL.
+  // the browser. Present when the client sends a sane number, 0 otherwise.
   const rawOffset = Number(req.query.tzOffset);
   const tzOffset = Number.isInteger(rawOffset) && rawOffset >= -720 && rawOffset <= 840 ? rawOffset : 0;
-  // The single current offset applies to the whole range (SQLite has no tz
-  // database), so buckets on the far side of a DST transition sit 1h off.
   const tzModifier = `${tzOffset >= 0 ? '+' : '-'}${Math.abs(tzOffset)} minutes`;
+
+  return { since, dateFormat, tzModifier };
+}
+
+// Usage timeline grouped by client profile: one (bucket, profile) pair per
+// row, feeding the dashboard's multi-profile overview chart. The single-profile
+// drill-down a table row opens lives on the /:profileId route below, so both
+// charts bucket time identically and are directly comparable.
+//
+// Reads the raw `requests` table on purpose, like both sibling profile routes:
+// these totals have to agree with the client-profile table sitting next to the
+// chart, and pruning (`REQUEST_ANALYTICS_MAX_ROWS`) drops raw rows on both
+// routes alike rather than leaving one window wider than the other.
+analyticsRouter.get('/by-client-profile-timeline', (req: Request, res: Response) => {
+  const { since, dateFormat, tzModifier } = timelineBucketing(req);
+  const db = getDb();
+
+  const rows = db.prepare(`
+    SELECT
+      strftime(?, r.created_at, ?) as timestamp,
+      r.client_profile_id as profile_id,
+      p.name as name,
+      COUNT(*) as requests
+    FROM requests r
+    LEFT JOIN client_profiles p ON p.id = r.client_profile_id
+    WHERE r.client_profile_id IS NOT NULL AND r.created_at >= ?
+    GROUP BY timestamp, r.client_profile_id
+    ORDER BY timestamp ASC
+  `).all(dateFormat, tzModifier, since) as any[];
+
+  res.json(rows.map(r => ({
+    timestamp: r.timestamp,
+    profileId: r.profile_id,
+    name: r.name ?? null,
+    requests: r.requests,
+  })));
+});
+
+// Timeline for a specific client profile.
+analyticsRouter.get('/by-client-profile/:profileId/timeline', (req: Request, res: Response) => {
+  const { since, dateFormat, tzModifier } = timelineBucketing(req);
+  const profileId = Number(req.params.profileId);
+  const db = getDb();
+
+  if (!Number.isInteger(profileId)) {
+    res.status(400).json({ error: 'invalid profile id' });
+    return;
+  }
+
+  const rows = db.prepare(`
+    SELECT
+      strftime(?, created_at, ?) as timestamp,
+      COUNT(*) as requests
+    FROM requests
+    WHERE client_profile_id = ? AND created_at >= ?
+    GROUP BY timestamp
+    ORDER BY timestamp ASC
+  `).all(dateFormat, tzModifier, profileId, since) as any[];
+
+  res.json(rows);
+});
+
+// Timeline data
+analyticsRouter.get('/timeline', (req: Request, res: Response) => {
+  const { since, dateFormat, tzModifier } = timelineBucketing(req);
+  const db = getDb();
 
   // Read from request_hourly (hour-bucketed) for both 'hour' and 'day'
   // intervals. Day buckets are rolled up via strftime on the hour column,

@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ಟೋಕನ್‌ಗಳ ಉಳಿತಾಯ",
     "cacheHitRateHint": "ಸರ್ವರ್ ಪ್ರಾರಂಭವಾದಾಗಿನಿಂದ {hits} ಹಿಟ್‌ಗಳು ಮತ್ತು {misses} ಮಿಸ್‌ಗಳು · {requests} ಪೂರೈಕೆದಾರ ಕರೆಗಳನ್ನು ತಪ್ಪಿಸಲಾಗಿದೆ",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

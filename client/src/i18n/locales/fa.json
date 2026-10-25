@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} توکن صرفه‌جویی شد",
     "cacheHitRateHint": "{hits} اصابت در برابر {misses} خطا از زمان راه‌اندازی سرور · {requests} فراخوانی ارائه‌دهنده صرفه‌جویی شد",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

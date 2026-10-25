@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} tokenuri economisite",
     "cacheHitRateHint": "{hits} accesări reușite față de {misses} ratări de la pornirea serverului · {requests} apeluri către furnizor evitate",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

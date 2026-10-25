@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token dijimatkan",
     "cacheHitRateHint": "{hits} hit berbanding {misses} miss sejak pelayan dimulakan · {requests} panggilan pembekal dielakkan",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

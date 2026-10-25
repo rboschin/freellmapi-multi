@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} トークンを節約",
     "cacheHitRateHint": "サーバー起動以降 {hits} ヒット / {misses} ミス · プロバイダー呼び出し {requests} 回を回避",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

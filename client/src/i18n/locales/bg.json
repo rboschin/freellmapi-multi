@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Спестени {tokens} токена",
     "cacheHitRateHint": "{hits} попадения срещу {misses} пропуска от старта на сървъра · спестени {requests} заявки към доставчик",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

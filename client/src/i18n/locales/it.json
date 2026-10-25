@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token risparmiati",
     "cacheHitRateHint": "{hits} hit contro {misses} miss dall'avvio del server · {requests} chiamate al provider evitate",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Richieste per client profile nel tempo",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

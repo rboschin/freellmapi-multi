@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ടോക്കണുകൾ ലാഭിച്ചു",
     "cacheHitRateHint": "സെർവർ ആരംഭിച്ചതിനുശേഷം {hits} ഹിറ്റുകൾ, {misses} മിസ്സുകൾ · {requests} ദാതാവ് കോളുകൾ ഒഴിവാക്കി",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

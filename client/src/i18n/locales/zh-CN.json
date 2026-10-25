@@ -854,6 +854,7 @@
     "cacheSavedTokens": "已节省 {tokens} 词元",
     "cacheHitRateHint": "自服务器启动以来命中 {hits} 次、未命中 {misses} 次 · 省下 {requests} 次提供方调用",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

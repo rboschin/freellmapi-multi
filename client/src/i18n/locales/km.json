@@ -854,6 +854,7 @@
     "cacheSavedTokens": "សន្សំបាន {tokens} តូខឹន",
     "cacheHitRateHint": "{hits} ជោគជ័យ ធៀបនឹង {misses} បរាជ័យ តាំងពីម៉ាស៊ីនមេចាប់ផ្ដើម · ជៀសវាងការហៅអ្នកផ្ដល់សេវា {requests}",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

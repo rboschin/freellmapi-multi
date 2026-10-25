@@ -854,6 +854,7 @@
     "cacheSavedTokens": "נחסכו {tokens} טוקנים",
     "cacheHitRateHint": "{hits} פגיעות מול {misses} החטאות מאז הפעלת השרת · נחסכו {requests} קריאות לספק",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

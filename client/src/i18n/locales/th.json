@@ -854,6 +854,7 @@
     "cacheSavedTokens": "ประหยัด {tokens} โทเค็น",
     "cacheHitRateHint": "{hits} ครั้งที่พบ เทียบกับ {misses} ครั้งที่ไม่พบ นับตั้งแต่เซิร์ฟเวอร์เริ่มทำงาน · เลี่ยงการเรียกผู้ให้บริการ {requests} ครั้ง",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

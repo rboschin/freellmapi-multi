@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} టోకెన్‌ల ఆదా",
     "cacheHitRateHint": "సర్వర్ ప్రారంభమైనప్పటి నుండి {hits} హిట్‌లు, {misses} మిస్‌లు · {requests} ప్రొవైడర్ కాల్‌లు ఆదా అయ్యాయి",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

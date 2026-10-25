@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} 토큰 절약",
     "cacheHitRateHint": "서버 시작 이후 적중 {hits}회, 실패 {misses}회 · 제공자 호출 {requests}회 절약",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

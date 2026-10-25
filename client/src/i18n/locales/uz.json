@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token tejaldi",
     "cacheHitRateHint": "Server ishga tushganidan beri {hits} muvaffaqiyat, {misses} o‘tkazib yuborish · {requests} ta provayder so‘rovi tejaldi",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

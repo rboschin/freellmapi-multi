@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Sutaupyta {tokens} žetonų",
     "cacheHitRateHint": "{hits} pataikymai prieš {misses} praleidimus nuo serverio paleidimo · išvengta {requests} tiekėjo užklausų",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

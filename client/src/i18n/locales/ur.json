@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} ٹوکن بچائے گئے",
     "cacheHitRateHint": "سرور شروع ہونے کے بعد سے {hits} ہٹ بمقابلہ {misses} مِس · {requests} فراہم کنندہ کالز سے بچت",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

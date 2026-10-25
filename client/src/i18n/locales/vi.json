@@ -854,6 +854,7 @@
     "cacheSavedTokens": "Tiết kiệm {tokens} token",
     "cacheHitRateHint": "{hits} lần trúng so với {misses} lần trượt kể từ khi máy chủ khởi động · tránh được {requests} lượt gọi nhà cung cấp",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

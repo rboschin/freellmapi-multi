@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token ang natipid",
     "cacheHitRateHint": "{hits} hit laban sa {misses} miss mula nang magsimula ang server · {requests} tawag sa provider ang naiwasan",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

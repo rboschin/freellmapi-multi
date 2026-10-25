@@ -854,6 +854,7 @@
     "cacheSavedTokens": "تم توفير {tokens} رمز",
     "cacheHitRateHint": "{hits} إصابة مقابل {misses} إخفاق منذ تشغيل الخادم · تم تفادي {requests} طلب للمزوّد",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {

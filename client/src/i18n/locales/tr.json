@@ -854,6 +854,7 @@
     "cacheSavedTokens": "{tokens} token tasarruf edildi",
     "cacheHitRateHint": "Sunucu başlatıldığından beri {hits} isabet, {misses} ıskalama · {requests} sağlayıcı çağrısından kaçınıldı",
     "usageByClientProfile": "Usage by client profile",
+    "clientProfileTimeline": "Client profile requests over time",
     "clientProfileColumn": "Client profile"
   },
   "logs": {
