@@ -566,7 +566,9 @@ analyticsRouter.get('/by-client-profile-timeline', (req: Request, res: Response)
       strftime(?, r.created_at, ?) as timestamp,
       r.client_profile_id as profile_id,
       p.name as name,
-      COUNT(*) as requests
+      COUNT(*) as requests,
+      SUM(CASE WHEN r.status = 'success' THEN 1 ELSE 0 END) as success_count,
+      SUM(CASE WHEN r.status = 'error' THEN 1 ELSE 0 END) as error_count
     FROM requests r
     LEFT JOIN client_profiles p ON p.id = r.client_profile_id
     WHERE r.client_profile_id IS NOT NULL AND r.created_at >= ?
@@ -579,6 +581,8 @@ analyticsRouter.get('/by-client-profile-timeline', (req: Request, res: Response)
     profileId: r.profile_id,
     name: r.name ?? null,
     requests: r.requests,
+    successCount: r.success_count,
+    errorCount: r.error_count,
   })));
 });
 

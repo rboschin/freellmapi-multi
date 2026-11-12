@@ -250,6 +250,8 @@ interface ProfileTimelineRow {
   profileId: number
   name: string | null
   requests: number
+  successCount: number
+  errorCount: number
 }
 
 function ProfileTimelineDialog({ profile, range, onClose }: { profile: { id: number; name: string | null } | null; range: TimeRange; onClose: () => void }) {
@@ -798,21 +800,29 @@ export default function AnalyticsPage() {
   // happens to appear earliest in time.
   const profileTimelineChart = useMemo(() => {
     if (profileTimeline.length === 0) return { rows: [] as Record<string, number | string>[], profiles: [] as [number, string][] }
-    const counts = new Map<string, Map<number, number>>()
+    const successCounts = new Map<string, Map<number, number>>()
+    const errorCounts = new Map<string, Map<number, number>>()
     const totals = new Map<number, number>()
     const labels = new Map<number, string>()
     for (const row of profileTimeline) {
       labels.set(row.profileId, row.name ?? `#${row.profileId}`)
       totals.set(row.profileId, (totals.get(row.profileId) ?? 0) + row.requests)
-      let perProfile = counts.get(row.timestamp)
-      if (!perProfile) counts.set(row.timestamp, (perProfile = new Map()))
-      perProfile.set(row.profileId, row.requests)
+      let successPerProfile = successCounts.get(row.timestamp)
+      if (!successPerProfile) successCounts.set(row.timestamp, (successPerProfile = new Map()))
+      successPerProfile.set(row.profileId, row.successCount ?? 0)
+      let errorPerProfile = errorCounts.get(row.timestamp)
+      if (!errorPerProfile) errorCounts.set(row.timestamp, (errorPerProfile = new Map()))
+      errorPerProfile.set(row.profileId, row.errorCount ?? 0)
     }
     const ids = [...totals.keys()].sort((a, b) => (totals.get(b) ?? 0) - (totals.get(a) ?? 0))
-    const rows = [...counts.keys()].sort().map((timestamp) => {
-      const bucket = counts.get(timestamp)!
+    const rows = [...successCounts.keys()].sort().map((timestamp) => {
+      const successBucket = successCounts.get(timestamp)!
+      const errorBucket = errorCounts.get(timestamp)!
       const point: Record<string, number | string> = { timestamp }
-      for (const id of ids) point[`p${id}`] = bucket.get(id) ?? 0
+      for (const id of ids) {
+        point[`p${id}`] = successBucket.get(id) ?? 0
+        point[`p${id}_err`] = errorBucket.get(id) ?? 0
+      }
       return point
     })
     return { rows, profiles: ids.map((id) => [id, labels.get(id) ?? `#${id}`] as [number, string]) }
@@ -1422,15 +1432,27 @@ export default function AnalyticsPage() {
                     <Tooltip contentStyle={tooltipStyle} />
                     <Legend wrapperStyle={{ fontSize: 12 }} iconType="line" />
                     {profileTimelineChart.profiles.map(([id, label], index) => (
-                      <Line
-                        key={id}
-                        type="monotone"
-                        dataKey={`p${id}`}
-                        name={label}
-                        stroke={profileSeriesColors[index % profileSeriesColors.length]}
-                        strokeWidth={2}
-                        dot={false}
-                      />
+                      <>
+                        <Line
+                          key={`${id}-success`}
+                          type="monotone"
+                          dataKey={`p${id}`}
+                          name={`${label} ${t('common.success')}`}
+                          stroke={profileSeriesColors[index % profileSeriesColors.length]}
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                        <Line
+                          key={`${id}-error`}
+                          type="monotone"
+                          dataKey={`p${id}_err`}
+                          name={`${label} ${t('analytics.errors')}`}
+                          stroke={profileSeriesColors[index % profileSeriesColors.length]}
+                          strokeWidth={1.5}
+                          strokeDasharray="4 4"
+                          dot={false}
+                        />
+                      </>
                     ))}
                   </LineChart>
                 </ResponsiveContainer>

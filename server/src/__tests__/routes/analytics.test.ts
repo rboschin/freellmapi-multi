@@ -952,8 +952,8 @@ describe('Analytics API', () => {
       expect(status).toBe(200);
       // Ordered by profile id: the route only sorts on the bucket.
       expect([...body].sort((a: any, b: any) => a.profileId - b.profileId)).toEqual([
-        { timestamp: '2026-05-29T11:00:00', profileId: laptop, name: 'laptop', requests: 2 },
-        { timestamp: '2026-05-29T11:00:00', profileId: phone, name: 'phone', requests: 1 },
+        { timestamp: '2026-05-29T11:00:00', profileId: laptop, name: 'laptop', requests: 2, successCount: 2, errorCount: 0 },
+        { timestamp: '2026-05-29T11:00:00', profileId: phone, name: 'phone', requests: 1, successCount: 1, errorCount: 0 },
       ]);
     });
 

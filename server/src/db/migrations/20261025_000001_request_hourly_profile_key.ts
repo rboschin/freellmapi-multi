@@ -53,14 +53,11 @@ export function up(db: Db): void {
     `);
     db.exec('DROP TABLE request_hourly');
     db.exec('ALTER TABLE request_hourly_rebuilt RENAME TO request_hourly');
-    // DROP TABLE takes the old index with it; the expression index below is
-    // the new key, this one just keeps hour-range scans on the index.
-    db.prepare('CREATE INDEX IF NOT EXISTS idx_request_hourly_hour ON request_hourly(hour)').run();
-
     // The replacement uniqueness key: ifnull() folds "no profile" onto a
     // single non-NULL value, so a UNIQUE index — unlike the primary key — can
     // collapse the NULLs. Upserts must name this same expression verbatim in
     // their ON CONFLICT clause; an index cannot be targeted by name.
+    // This unique index also covers hour-range scans (hour is the leading column).
     db.prepare(`CREATE UNIQUE INDEX ${INDEX_NAME} ON request_hourly(hour, ifnull(client_profile_id, -1))`).run();
   })();
 }
