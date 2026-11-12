@@ -5,6 +5,7 @@ import { FirecrawlProvider } from '../../providers/firecrawl.js';
 import { LinkupProvider } from '../../providers/linkup.js';
 import { ParallelProvider } from '../../providers/parallel.js';
 import { KeenableProvider } from '../../providers/keenable.js';
+import { OutcrawlProvider } from '../../providers/outcrawl.js';
 import { getProvider } from '../../providers/index.js';
 
 // Search platforms (#1174) validate keys without spending search credits and
@@ -29,6 +30,7 @@ const cases = [
   { provider: new LinkupProvider(), url: 'https://api.linkup.so/v1/credits/balance', method: 'GET' },
   { provider: new ParallelProvider(), url: 'https://api.parallel.ai/v1/search', method: 'POST' },
   { provider: new KeenableProvider(), url: 'https://api.keenable.ai/v1/search', method: 'POST' },
+  { provider: new OutcrawlProvider(), url: 'https://api.outcrawl.ai/v1/credits', method: 'GET' },
 ];
 
 describe.each(cases)('$provider.name key validation', ({ provider, url, method }) => {
@@ -50,9 +52,21 @@ describe.each(cases)('$provider.name key validation', ({ provider, url, method }
     expect(await provider.validateKey('k')).toBe(true);
   });
 
-  it('reports 5xx as inconclusive', async () => {
+  it('reports 5xx as inconclusive by throwing, never as an invalid key', async () => {
+    // #1717: a returned {valid:false} is persisted as status='invalid', and
+    // disabled keys are skipped by later health passes, so a 5xx used to bench
+    // a working key permanently. Inconclusive cases must throw (#1298).
     respond(503);
-    expect(await provider.validateKey('k')).toMatchObject({ valid: false });
+    await expect(provider.validateKey('k')).rejects.toThrow(/inconclusive/i);
+  });
+
+  it('reports a probe timeout as inconclusive by throwing (#1717)', async () => {
+    // The reported case: a search key whose 10 s probe timed out was marked
+    // invalid and disabled 15 minutes after it was healthy.
+    globalThis.fetch = vi.fn(async () => {
+      throw Object.assign(new Error('The operation was aborted'), { name: 'AbortError' });
+    }) as unknown as typeof fetch;
+    await expect(provider.validateKey('k')).rejects.toThrow(/inconclusive/i);
   });
 
   it('refuses chat completions with a 422', async () => {
@@ -110,6 +124,6 @@ describe('Keenable keyless validation', () => {
 
 describe('registry', () => {
   it('registers every search platform', () => {
-    for (const p of ['tavily', 'exa', 'firecrawl', 'linkup', 'parallel', 'keenable'] as const) expect(getProvider(p)?.platform).toBe(p);
+    for (const p of ['tavily', 'exa', 'firecrawl', 'linkup', 'parallel', 'keenable', 'outcrawl'] as const) expect(getProvider(p)?.platform).toBe(p);
   });
 });

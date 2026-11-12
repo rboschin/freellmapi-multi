@@ -53,6 +53,10 @@ const REMOVE_AURAY_PROVIDER_FILENAME = '20261019_000001_remove_auray_provider.ts
 const KEY_LAST_HEALTHY_AT_FILENAME = '20261020_000001_key_last_healthy_at.ts';
 const ADD_CLIENT_PROFILE_ID_FILENAME = '20261024_000001_add_client_profile_id.ts';
 const REQUEST_HOURLY_PROFILE_KEY_FILENAME = '20261025_000001_request_hourly_profile_key.ts';
+const CUSTOM_MEDIA_ENDPOINT_IDENTITY_FILENAME = '20261028_000001_custom_media_endpoint_identity.ts';
+const CLOUDFLARE_NEURON_USAGE_FILENAME = '20261104_000001_cloudflare_neuron_usage.ts';
+const MODEL_MONTHLY_USAGE_FILENAME = '20261111_000001_model_monthly_usage.ts';
+const PROFILE_ROUTING_STRATEGY_FILENAME = '20261111_000002_profile_routing_strategy.ts';
 
 interface SchemaRow {
   type: string;
@@ -152,6 +156,10 @@ describe('migration round trip', () => {
         KEY_LAST_HEALTHY_AT_FILENAME,
         ADD_CLIENT_PROFILE_ID_FILENAME,
         REQUEST_HOURLY_PROFILE_KEY_FILENAME,
+        CUSTOM_MEDIA_ENDPOINT_IDENTITY_FILENAME,
+        CLOUDFLARE_NEURON_USAGE_FILENAME,
+        MODEL_MONTHLY_USAGE_FILENAME,
+        PROFILE_ROUTING_STRATEGY_FILENAME,
       ]);
     } finally {
       db.close();
