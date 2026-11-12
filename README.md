@@ -1,5 +1,3 @@
-> **Fork note:** this is a modified version of FreeLLMAPI that additionally includes **client-profile key management with usage statistics**, distinguishing usage between client profiles.
-
 <div align="center">
 
 # FreeLLMAPI
