@@ -119,9 +119,13 @@ export function inferPoolForPlatform(platform: Platform, modelId?: string | null
   if (platform === 'aclide') return 'aclide::monthly-credit';
   if (platform === 'speka') return 'speka::monthly-credit';
   if (platform === 'nabh') return 'nabh::monthly-credit';
+  if (platform === 'zro') return 'zro::daily-free';
   if (platform === 'novai') return 'novai::daily-free';
   if (platform === 'varosity') return 'varosity::account-credit';
   if (platform === 'rime') return 'rime::monthly-credit';
+  if (platform === 'typecast') return 'typecast::monthly-credit';
+  if (platform === 'cartesia') return 'cartesia::monthly-credit';
+  if (platform === 'silvr') return 'silvr::daily-free';
   if (platform === 'freetts') return 'freetts::monthly-characters';
   if (platform === 'freeinference') return 'freeinference::daily-free';
   if (platform === 'freemodel') return 'freemodel::account-free';
@@ -197,6 +201,7 @@ export function inferPoolForPlatform(platform: Platform, modelId?: string | null
 function isSharedPool(platform: Platform): boolean {
   if (platform === 'varosity') return true;
   if (platform === 'rime') return true;
+  if (platform === 'typecast' || platform === 'cartesia' || platform === 'silvr') return true;
   if (platform === 'freetts') return true;
   if (platform === 'freemodel') return true;
   if (platform === 'apinex') return true;

@@ -104,11 +104,19 @@ export type Platform =
   | 'jamai'
   // One shared renewable monthly credit allowance; signed catalog only.
   | 'nabh'
+  // Zro by MoonMath.ai: selected chat routes share daily free usage. The
+  // allowance is not monthly cash credit; model rows are hosted-catalog only.
+  | 'zro'
   // Daily-free video route; signed catalog only.
   | 'novai'
   | 'varosity'
   // Native TTS and transcription; one shared renewable monthly credit grant.
   | 'rime'
+  // Native speech: shared monthly credits, non-commercial Free output.
+  | 'typecast'
+  | 'cartesia'
+  // OpenAI-compatible gateway; one shared daily free allowance.
+  | 'silvr'
   // Local personal BYOK TTS; shared monthly characters, watermarked Free audio.
   | 'freetts'
   // Research API; chat and embeddings share a daily quota. Requests are logged.
